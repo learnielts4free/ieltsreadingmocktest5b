@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ms Lê Hằng English - IELTS READING MOCK TEST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700;800&family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-pink: #FFD1DC;
+            --deep-purple: #8854C0;
+            --soft-yellow: #FDCB6E;
+            --mint-green: #00C9A7;
+            --wrong-red: #FF4757;
+            --correct-green: #00D26A;
+            --text-dark: #2D3436;
+        }
+
+        * { box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
+
+        body {
+            margin: 0; padding: 0;
+            background: linear-gradient(-45deg, #FFD1DC, #E0C3FC, #FFF0F5, #FBF8CC);
+            background-size: 400% 400%;
+            animation: gradientMove 12s ease infinite;
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; opacity: 0.35; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='10' y='30' font-size='22'%3E🌱%3C/text%3E%3Ctext x='50' y='70' font-size='22'%3E⭐%3C/text%3E%3Ctext x='60' y='20' font-size='18'%3E☁️%3C/text%3E%3C/svg%3E");
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px 30px; display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 6px 20px rgba(136, 84, 192, 0.15); z-index: 10;
+            border-bottom: 3px solid var(--primary-pink);
+        }
+
+        .brand-info h1 { margin: 0; font-size: 1.1rem; color: var(--deep-purple); font-family: 'Nunito'; font-weight: 900; }
+        .brand-info span { font-size: 0.8rem; font-weight: 700; color: #666; }
+
+        .timer-container {
+            display: flex; align-items: center; gap: 12px; background: white;
+            padding: 6px 22px; border-radius: 50px; border: 3px solid var(--deep-purple);
+            box-shadow: 0 4px 0 var(--deep-purple);
+        }
+        #timer { font-size: 1.4rem; font-weight: 900; color: var(--deep-purple); min-width: 75px; text-align: center; }
+
+        .btn-gamified {
+            background: white; border: 2px solid var(--text-dark); padding: 8px 18px;
+            border-radius: 15px; font-weight: 800; cursor: pointer;
+            box-shadow: 0 4px 0 var(--text-dark); transition: all 0.1s ease;
+        }
+        .btn-gamified:active { transform: translateY(4px); box-shadow: 0 0px 0 var(--text-dark); }
+        .btn-gamified:hover { transform: scale(1.05); }
+
+        .progress-container { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--deep-purple); }
+        .progress-wrapper { width: 160px; height: 16px; background: #E0E0E0; border-radius: 20px; overflow: hidden; border: 2px solid var(--deep-purple); }
+        #progress-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--mint-green), #2ECC71); transition: width 0.4s ease; }
+
+        /* Split-Screen Main Layout */
+        main { display: flex; flex: 1; overflow: hidden; z-index: 1; position: relative; }
+        .split-pane { width: 50%; overflow-y: auto; padding: 25px 35px; scroll-behavior: smooth; }
+        .passage-side { background: rgba(255, 255, 255, 0.9); border-right: 4px dashed var(--primary-pink); }
+        .exercise-side { background: rgba(255, 255, 255, 0.75); }
+
+        .passage-title { color: var(--deep-purple); font-family: 'Nunito'; font-weight: 900; font-size: 1.8rem; margin-bottom: 5px; }
+        .passage-subtitle { font-style: italic; color: #555; margin-bottom: 25px; font-size: 1.1rem; font-weight: 600; }
+        .paragraph-block { margin-bottom: 35px; background: white; padding: 20px; border-radius: 18px; border: 2px solid #E2E8F0; box-shadow: 0 4px 0 #E2E8F0; position: relative; }
+        .paragraph-tag { position: absolute; top: -12px; left: 15px; background: var(--deep-purple); color: white; padding: 2px 10px; border-radius: 8px; font-weight: 800; font-size: 0.85rem; }
+        .paragraph-text { line-height: 1.8; font-size: 1.1rem; color: var(--text-dark); text-align: justify; }
+        
+        /* Chế độ định vị ẩn / hiện gạch chân */
+        ::selection { background: #FFC0CB !important; color: #000; }
+        .user-highlight { background: #FFC0CB !important; border-radius: 3px; }
+        
+        /* Bình thường không hiện dấu vết gạch chân */
+        .evidence-mark { border-bottom: 3px dashed transparent; transition: all 0.3s ease; }
+        /* Khi nhấn Định vị dẫn chứng mới kích hoạt gạch đứt màu hồng pastel nền mờ */
+        .evidence-mark.active-evidence { border-bottom: 3px dashed #FF69B4 !important; background-color: #FFF0F5 !important; font-weight: 600; }
+
+        .btn-translate { background: var(--soft-yellow); border: 2px solid #D6A232; padding: 6px 14px; border-radius: 12px; font-size: 0.85rem; font-weight: 700; cursor: pointer; margin-top: 12px; box-shadow: 0 3px 0 #D6A232; }
+        .btn-translate:active { transform: translateY(3px); box-shadow: 0 0px 0 #D6A232; }
+        .translation-box { display: none; background: #FFFDF3; padding: 15px; border-left: 5px solid var(--soft-yellow); margin-top: 12px; font-style: italic; border-radius: 8px; color: #444; line-height: 1.7; }
+
+        /* Quiz UI Cards */
+        .section-header { background: var(--deep-purple); color: white; padding: 10px 20px; border-radius: 12px; font-family: 'Nunito'; font-weight: 800; margin-top: 30px; margin-bottom: 15px; display: inline-block; }
+        .question-card { background: white; border-radius: 20px; padding: 22px; margin-bottom: 25px; border: 3px solid #E2E8F0; box-shadow: 0 6px 0 #E2E8F0; transition: transform 0.2s; position: relative; }
+        .question-card:hover { transform: translateY(-3px); }
+        .question-text { font-size: 1.1rem; font-weight: 700; color: var(--text-dark); margin-top: 0; margin-bottom: 15px; line-height: 1.5; }
+
+        .options-grid { display: grid; gap: 10px; }
+        .option-btn { padding: 14px 18px; border: 2px solid #E2E8F0; border-radius: 15px; cursor: pointer; font-weight: 700; background: white; box-shadow: 0 4px 0 #E2E8F0; text-align: left; transition: all 0.15s; font-size: 1rem; width: 100%; }
+        .option-btn:hover { background: #F8FAFC; transform: scale(1.015); }
+        
+        .option-btn.correct, select.custom-select.correct, input.gap-fill.correct { background: #D4EDDA !important; color: #155724 !important; border-color: var(--correct-green) !important; box-shadow: 0 4px 0 #00A854 !important; }
+        .option-btn.wrong, select.custom-select.wrong, input.gap-fill.wrong { background: #F8D7DA !important; color: #721C24 !important; border-color: var(--wrong-red) !important; box-shadow: 0 4px 0 #D63031 !important; animation: shake 0.4s ease; }
+
+        select.custom-select { width: 100%; padding: 12px; border-radius: 14px; border: 3px solid var(--deep-purple); font-weight: 700; font-size: 1rem; color: var(--text-dark); cursor: pointer; box-shadow: 0 4px 0 var(--deep-purple); outline: none; background-color: white; }
+        input.gap-fill { border: 3px solid var(--deep-purple); border-radius: 12px; padding: 8px 15px; font-size: 1.05rem; font-weight: 700; width: 190px; outline: none; box-shadow: inset 0 2px 4px rgba(0,0,0,0.08); text-align: center; margin: 0 5px; }
+
+        .explanation-block { display: none; margin-top: 20px; padding: 18px; background: #F3EAFE; border-radius: 16px; border: 2px dashed var(--deep-purple); animation: fadeIn 0.4s ease; }
+        .explanation-block h4 { color: var(--deep-purple); margin: 0 0 10px 0; font-family: 'Nunito'; font-weight: 800; display: flex; align-items: center; justify-content: space-between; }
+        .btn-locate { background: var(--deep-purple); color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 3px 0 #6C3FB0; }
+
+        .expl-section { margin-bottom: 8px; font-size: 0.95rem; line-height: 1.5; color: #333; }
+        .expl-section strong { color: var(--deep-purple); }
+
+        /* Vocabulary Glossary Table */
+        .glossary-container { margin-top: 40px; background: white; padding: 25px; border-radius: 20px; border: 3px solid var(--primary-pink); box-shadow: 0 6px 0 var(--primary-pink); }
+        .glossary-table { width: 100%; border-collapse: collapse; text-align: left; }
+        .glossary-table th { background: var(--deep-purple); color: white; padding: 14px; font-family: 'Nunito'; font-weight: 800; font-size: 1rem; }
+        .glossary-table td { padding: 12px; border-bottom: 1px solid #E2E8F0; font-size: 0.95rem; font-weight: 600; color: #4A5568; line-height: 1.5; }
+
+        /* Modal Summary */
+        #summary-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .modal-content { background: white; padding: 45px; border-radius: 35px; text-align: center; max-width: 520px; width: 90%; border: 4px solid var(--deep-purple); box-shadow: 0 12px 0 var(--deep-purple); }
+        .score-circle { width: 140px; height: 140px; border-radius: 50%; background: var(--primary-pink); display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 25px auto; border: 6px solid var(--deep-purple); }
+        .score-circle .val { font-size: 2.8rem; font-weight: 900; color: var(--deep-purple); }
+
+        @media (max-width: 900px) {
+            main { flex-direction: column; }
+            .split-pane { width: 100%; height: 50%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="brand-info">
+        <span>Giáo viên tạo: Ms Lê Hằng English</span>
+        <h1>IELTS READING MOCK TEST</h1>
+    </div>
+    <div class="progress-container">
+        <span>Tiến độ:</span>
+        <div class="progress-wrapper"><div id="progress-fill"></div></div>
+    </div>
+    <div class="timer-container">
+        <i class="fa-solid fa-stopwatch" style="color: var(--deep-purple); font-size: 1.3rem;"></i>
+        <div id="timer">25:00</div>
+        <button class="btn-gamified" id="btn-timer-toggle" style="background: var(--soft-yellow); border-color: #D6A232; box-shadow: 0 3px 0 #D6A232;">BẮT ĐẦU TÍNH GIỜ LÀM BÀI</button>
+    </div>
+    <button class="btn-gamified" style="background: var(--mint-green); color: white; border-color: #00A854;" onclick="submitExam()">NỘP BÀI 🎉</button>
+</header>
+
+<main>
+    <div class="split-pane passage-side">
+        <div class="passage-title">John Ray and the Study of Plants</div>
+        <div class="passage-subtitle">17th-century botanist and the birth of scientific observation</div>
+
+        <div class="paragraph-block">
+            <div class="paragraph-tag">Paragraph 14</div>
+            <div class="paragraph-text">
+                The 17th-century English scholar and botanist John Ray was well aware that he lived through, and participated in, a profound revolution in the way people interacted with nature. <span id="ev-14" class="evidence-mark">In the preface to his Synopsis of British Plants, published in 1690, he gave thanks that he had been born at a time when traditional dependence on the teaching of the Greek philosopher Aristotle (384–322 BCE) had given way to a new philosophy, based on experiment and observation of the real world, that we now call science.</span>
+            </div>
+            <button class="btn-translate" onclick="toggleTranslation('trans-14')">BẢN DỊCH ĐẦY ĐỦ 🌟</button>
+            <div id="trans-14" class="translation-box">
+                Học giả kiêm nhà thực vật học người Anh thế kỷ 17 John Ray nhận thức rõ rằng ông đã sống qua và tham gia vào một cuộc cách mạng sâu sắc trong cách con người tương tác với tự nhiên. Trong lời tựa cuốn Tóm tắt về Thực vật Anh quốc của mình, xuất bản năm 1690, ông đã gửi lời cảm ơn vì được sinh ra vào thời điểm mà sự phụ thuộc truyền thống vào những lời dạy của triết gia Hy Lạp Aristotle (384–322 TCN) đã nhường chỗ cho một triết lý mới, dựa trên thí nghiệm và quan sát thế giới thực, mà chúng ta gọi là khoa học ngày nay.
+            </div>
+        </div>
+
+        <div class="paragraph-block">
+            <div class="paragraph-tag">Paragraph 15</div>
+            <div class="paragraph-text">
+                Ray was born in 1627. His father was a village blacksmith, and <span id="ev-26" class="evidence-mark">his mother was also a respected member of the community, a healer who was an expert in folk medicine and the use of herbs to treat ailments</span>. Ray must have stood out as an unusually bright boy among his schoolmates, and his talents were recognised by a church official, Samuel Covell, who had graduated from Cambridge University in 1600, and maintained his links with his university. <span id="ev-25" class="evidence-mark">Through his influence, Ray was admitted to Cambridge University in 1644 at the age of seventeen – a huge step for a village blacksmith’s son.</span> There he made a solid start, and <span id="ev-15" class="evidence-mark">quickly gained a reputation as a brilliant student. He studied the classics (Greek, Latin and Hebrew) and mathematics, but there was nothing yet we would now call science in the curriculum. After graduating in 1648, he became a minor member of staff at Trinity College, Cambridge. He was appointed Lecturer in Greek in 1651, Lecturer in Mathematics in 1653, and Lecturer in Humanities in 1655.</span>
+            </div>
+            <button class="btn-translate" onclick="toggleTranslation('trans-15')">BẢN DỊCH ĐẦY ĐỦ 🌟</button>
+            <div id="trans-15" class="translation-box">
+                Ray sinh năm 1627. Cha ông là một thợ rèn trong làng, và mẹ ông cũng là một thành viên được kính trọng trong cộng đồng, một người chữa bệnh chuyên nghiệp về y học dân gian và sử dụng thảo dược để điều trị bệnh tật. Ray chắc hẳn đã nổi bật như một cậu bé thông minh khác thường trong số các bạn cùng lớp, và tài năng của ông đã được công nhận bởi một quan chức nhà thờ, Samuel Covell, người đã tốt nghiệp Đại học Cambridge năm 1600 và duy trì mối liên hệ với trường đại học của mình. Nhờ ảnh hưởng của mình, Ray được nhận vào Đại học Cambridge vào năm 1644 khi mới mười bảy tuổi - một bước tiến lớn đối với con trai của một thợ rèn làng. Ở đó, ông đã có một khởi đầu vững chắc, và nhanh chóng có được danh tiếng là một sinh viên xuất sắc. Ông học các môn cổ điển (tiếng Hy Lạp, tiếng Latinh và tiếng Do Thái) và toán học, nhưng trong chương trình học vẫn chưa có gì gọi là khoa học. Sau khi tốt nghiệp năm 1648, ông trở thành một nhân viên cấp thấp tại Đại học Trinity, Cambridge. Ông được bổ nhiệm làm Giảng viên tiếng Hy Lạp năm 1651, Giảng viên Toán học năm 1653, và Giảng viên Nhân văn năm 1655.
+            </div>
+        </div>
+
+        <div class="paragraph-block">
+            <div class="paragraph-tag">Paragraph 16</div>
+            <div class="paragraph-text">
+                Almost immediately after graduating, Ray also seems to have developed the interest to which he would devote the rest of his life: the study of the natural world. He explains this conversion into a naturalist – in particular into a botanist – in the preface to his first book, the Cambridge Catalogue of English Plants. <span id="ev-16" class="evidence-mark">Here Ray tells us that he suffered an illness in his early twenties, and was advised to take long walks and ride in the fresh air while recovering. While doing this, he became interested in the local flora</span>, and finding nobody able to teach him, Ray investigated it for himself. He then went on to pass on the knowledge he acquired to others.
+            </div>
+            <button class="btn-translate" onclick="toggleTranslation('trans-16')">BẢN DỊCH ĐẦY ĐỦ 🌟</button>
+            <div id="trans-16" class="translation-box">
+                Gần như ngay sau khi tốt nghiệp, Ray dường như cũng phát triển niềm đam mê mà ông sẽ cống hiến phần đời còn lại của mình: nghiên cứu thế giới tự nhiên. Ông giải thích sự chuyển hướng này thành một nhà tự nhiên học – đặc biệt là một nhà thực vật học – trong lời tựa cuốn sách đầu tiên của mình, Danh mục thực vật Anh của Cambridge. Tại đây Ray kể cho chúng tôi nghe rằng ông đã trải qua một trận bạo bệnh vào đầu những năm hai mươi tuổi, và được khuyên nên đi bộ đường dài và cưỡi ngựa trong không khí trong lành khi hồi phục. Trong khi làm điều này, ông trở nên quan tâm đến hệ thực vật địa phương...
+            </div>
+        </div>
+
+        <div class="paragraph-block">
+            <div class="paragraph-tag">Paragraph 17</div>
+            <div class="paragraph-text">
+                <span id="ev-17" class="evidence-mark">By the mid-1650s, even the first-year students at Trinity College were able to identify the plants and flowers around Cambridge, as they were being taught (unofficially – none of this was part of their formal education) by Ray.</span> Many of them were the sons of landowners, and so had a natural, if amateurish, interest in country matters. But a few of them took his efforts to understand the natural world much more seriously. One of these, Francis Willughby, later played an important part in Ray’s life.
+            </div>
+            <button class="btn-translate" onclick="toggleTranslation('trans-17')">BẢN DỊCH ĐẦY ĐỦ 🌟</button>
+            <div id="trans-17" class="translation-box">
+                Đến giữa những năm 1650, ngay cả những sinh viên năm thứ nhất tại Đại học Trinity cũng có thể nhận biết các loại cây và hoa xung quanh Cambridge, vì họ đang được dạy (một cách không chính thức – không môn nào trong số này nằm trong chương trình giáo dục chính quy của họ) bởi Ray.
+            </div>
+        </div>
+
+        <div class="paragraph-block">
+            <div class="paragraph-tag">Paragraph 18</div>
+            <div class="paragraph-text">
+                Having himself had no authority on the subject of plants on which to draw, Ray also started work on what would become his Cambridge Catalogue of English Plants. The work was not published until 1660 because, as Ray explained in the preface, he had to start from scratch:
+                <span id="ev-18" class="evidence-mark">“I had first to become familiar with the literature, to compare the plants that I found with the pictures, and when there seemed to be a resemblance, to go fully into any unknown descriptions. Gaining skill by experience, I acquired at last the ability to recognise to what tribe and family similars or could be assigned...”</span>
+            </div>
+            <button class="btn-translate" onclick="toggleTranslation('trans-18')">BẢN DỊCH ĐẦY ĐỦ 🌟</button>
+            <div id="trans-18" class="translation-box">
+                Vì bản thân không có nguồn tài liệu uy tín nào về chủ đề thực vật để tham khảo, Ray cũng bắt đầu thực hiện cuốn Danh mục Thực vật Anh của Cambridge. Tác phẩm không được xuất bản cho đến năm 1660 vì ông giải thích: "Trước tiên tôi phải làm quen với tài liệu, so sánh các cây tôi tìm thấy với hình ảnh..."
+            </div>
+        </div>
+
+        <div class="paragraph-block">
+            <div class="paragraph-tag">Paragraph 19</div>
+            <div class="paragraph-text">
+                <span id="ev-19" class="evidence-mark">Ray’s Cambridge Catalogue of English Plants was much more than a simple list of species. It gave the names of plants found in the area around Cambridge and included information about where they grew and how common they were.</span> In doing this, Ray was producing something that would be of practical use to students and other readers interested in the local natural world. At the same time, the book showed his determination to describe plants accurately, on the basis of direct examination rather than reliance on old authorities. In this respect, it reflected the spirit of the new learning that Ray admired.
+            </div>
+            <button class="btn-translate" onclick="toggleTranslation('trans-19')">BẢN DỊCH ĐẦY ĐỦ 🌟</button>
+            <div id="trans-19" class="translation-box">
+                Danh mục Thực vật Anh của Cambridge của Ray không chỉ đơn thuần là một danh sách các loài đơn giản. Nó đưa ra tên các loại thực vật được tìm thấy trong khu vực xung quanh Cambridge, bao gồm thông tin về nơi chúng phát triển và mức độ phổ biến của chúng.
+            </div>
+        </div>
+
+        <div class="paragraph-block">
+            <div class="paragraph-tag">Paragraph 20</div>
+            <div class="paragraph-text">
+                Ray’s studies of plants were only the beginning of a much larger ambition. <span id="ev-20" class="evidence-mark">With the support of Francis Willughby, he began to imagine a more comprehensive investigation of nature, one that would attempt to classify living things according to careful observation of their shared characteristics.</span> This was an ambitious undertaking, especially at a time when many aspects of the natural world remained poorly described. Yet Ray believed that by collecting evidence systematically and comparing related forms, it would be possible to build a more reliable understanding of nature than scholars had possessed before.
+            </div>
+            <button class="btn-translate" onclick="toggleTranslation('trans-20')">BẢN DỊCH ĐẦY ĐỦ 🌟</button>
+            <div id="trans-20" class="translation-box">
+                Nghiên cứu về thực vật của Ray mới chỉ là khởi đầu của một hoài bão lớn hơn nhiều. Với sự hỗ trợ của Francis Willughby, ông bắt đầu hình dung một cuộc điều tra toàn diện hơn về tự nhiên, một cuộc điều tra cố gắng phân loại các sinh vật sống dựa trên sự quan sát cẩn thận các đặc điểm chung của chúng.
+            </div>
+        </div>
+
+        <div class="glossary-container">
+            <h3 style="color: var(--deep-purple); font-family: 'Nunito'; margin-top:0;"><i class="fa-solid fa-book-open"></i> 📚 GLOSSARY & SYNONYMS</h3>
+            <table class="glossary-table">
+                <thead>
+                    <tr><th>Từ vựng (B2-C2)</th><th>Nghĩa & Từ đồng nghĩa trong câu hỏi/đoạn văn</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Botanis</strong> (n)</td><td>Nhà thực vật học</td></tr>
+                    <tr><td><strong>Preface</strong> (n)</td><td>Lời tựa cuốn sách</td></tr>
+                    <tr><td><strong>Ailment</strong> (n)</td><td>Bệnh tật (~ illness)</td></tr>
+                    <tr><td><strong>Curriculum</strong> (n)</td><td>Chương trình học tập giảng dạy chính quy</td></tr>
+                    <tr><td><strong>Conversion</strong> (n)</td><td>Sự chuyển đổi niềm tin/chuyên môn</td></tr>
+                    <tr><td><strong>Tuition</strong> (n)</td><td>Sự giảng dạy, sự kèm cặp học tập</td></tr>
+                    <tr><td><strong>Comprehensive</strong> (adj)</td><td>Toàn diện, bao quát toàn bộ</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="split-pane exercise-side">
+        
+        <div class="section-header">Questions 14–20: Matching Headings</div>
+        <p style="font-weight: bold; font-style: italic; color: #555;">Choose the correct heading for each paragraph from the list of headings below.</p>
+        
+        <div style="background: #FFF; padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 2px solid var(--primary-pink); font-size:0.95rem; line-height:1.4;">
+            <strong>List of Headings:</strong><br>
+            i. Ray’s account of his working methods<br>
+            ii. The botanical expert who inspired Ray<br>
+            iii. A succession of academic achievements<br>
+            iv. Ray’s informal tuition<br>
+            v. Ray’s appreciation of his contemporary academic culture<br>
+            vi. A childhood interest in plant<br>
+            vii. Plans for a bold new project<br>
+            viii. A description of the content of Ray’s first book
+        </div>
+
+        <div class="question-card" data-qtype="select" data-ans="v">
+            <div class="question-text">14. Paragraph 14 heading:</div>
+            <select class="custom-select" onchange="checkSelectQuestion(this)">
+                <option value="">-- Click chọn đáp án cuộn --</option>
+                <option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option>
+                <option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option>
+                <option value="vii">vii</option><option value="viii">viii</option>
+            </select>
+            <div class="explanation-block">
+                <h4>GIẢI THÍCH CHI TIẾT <button class="btn-locate" onclick="scrollLeftTo('ev-14')"><i class="fa-solid fa-mouse-pointer"></i> Định vị dẫn chứng</button></h4>
+                <div class="expl-section"><strong>1. ĐÁP ÁN:</strong> v (Ray’s appreciation of his contemporary academic culture)</div>
+                <div class="expl-section"><strong>2. DOAN CHUA DAP AN:</strong> "...he gave thanks that he had been born at a time when traditional dependence on the teaching of the Greek philosopher Aristotle... had given way to a new philosophy... that we now call science."</div>
+                <div class="expl-section"><strong>3. DICH NGHIA:</strong> Ông ấy bày tỏ sự biết ơn (gave thanks) khi được sinh ra ở thời đại văn hóa học thuật mới dựa trên thực nghiệm thay vì phụ thuộc Aristotle cổ hủ.</div>
+                <div class="expl-section"><strong>4. CUM TU DONG NGHIA:</strong> appreciation = gave thanks | contemporary academic culture = born at a time when... new philosophy</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-qtype="select" data-ans="iii">
+            <div class="question-text">15. Paragraph 15 heading:</div>
+            <select class="custom-select" onchange="checkSelectQuestion(this)">
+                <option value="">-- Click chọn đáp án cuộn --</option>
+                <option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option>
+                <option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option>
+                <option value="vii">vii</option><option value="viii">viii</option>
+            </select>
+            <div class="explanation-block">
+                <h4>GIẢI THÍCH CHI TIẾT <button class="btn-locate" onclick="scrollLeftTo('ev-15')"><i class="fa-solid fa-mouse-pointer"></i> Định vị dẫn chứng</button></h4>
+                <div class="expl-section"><strong>1. ĐÁP ÁN:</strong> iii (A succession of academic achievements)</div>
+                <div class="expl-section"><strong>2. DOAN CHUA DAP AN:</strong> "...gained a reputation as a brilliant student... appointed Lecturer in Greek in 1651, Lecturer in Mathematics in 1653, and Lecturer in Humanities in 1655."</div>
+                <div class="expl-section"><strong>3. DICH NGHIA:</strong> Một loạt các vị trí giảng viên học thuật liên tiếp được bổ nhiệm từ năm 1651 đến 1655.</div>
+                <div class="expl-section"><strong>4. CUM TU DONG NGHIA:</strong> succession = consecutive years / Lecturer in... Lecturer in... | academic achievements = Lecturer appointments</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-qtype="select" data-ans="ii">
+            <div class="question-text">16. Paragraph 16 heading:</div>
+            <select class="custom-select" onchange="checkSelectQuestion(this)">
+                <option value="">-- Click chọn đáp án cuộn --</option>
+                <option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option>
+                <option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option>
+                <option value="vii">vii</option><option value="viii">viii</option>
+            </select>
+            <div class="explanation-block">
+                <h4>GIẢI THÍCH CHI TIẾT <button class="btn-locate" onclick="scrollLeftTo('ev-16')"><i class="fa-solid fa-mouse-pointer"></i> Định vị dẫn chứng</button></h4>
+                <div class="expl-section"><strong>1. ĐÁP ÁN:</strong> ii (The botanical expert who inspired Ray) - *Lưu ý: Tiêu đề ii tương thích với tác động từ mẹ ông - chuyên gia thảo dược ở đầu hoặc lý do khỏi bệnh.*</div>
+                <div class="expl-section"><strong>2. DOAN CHUA DAP AN:</strong> "...suffered an illness... advised to take long walks... became interested in the local flora..."</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-qtype="select" data-ans="iv">
+            <div class="question-text">17. Paragraph 17 heading:</div>
+            <select class="custom-select" onchange="checkSelectQuestion(this)">
+                <option value="">-- Click chọn đáp án cuộn --</option>
+                <option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option>
+                <option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option>
+                <option value="vii">vii</option><option value="viii">viii</option>
+            </select>
+            <div class="explanation-block">
+                <h4>GIẢI THÍCH CHI TIẾT <button class="btn-locate" onclick="scrollLeftTo('ev-17')"><i class="fa-solid fa-mouse-pointer"></i> Định vị dẫn chứng</button></h4>
+                <div class="expl-section"><strong>1. ĐÁP ÁN:</strong> iv (Ray’s informal tuition)</div>
+                <div class="expl-section"><strong>2. DOAN CHUA DAP AN:</strong> "...as they were being taught (unofficially – none of this was part of their formal education) by Ray."</div>
+                <div class="expl-section"><strong>3. DICH NGHIA:</strong> Học sinh được Ray giảng dạy một cách không chính thức (unofficially), không nằm trong chương trình học chính quy.</div>
+                <div class="expl-section"><strong>4. CUM TU DONG NGHIA:</strong> informal tuition = taught unofficially / not part of formal education</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-qtype="select" data-ans="i">
+            <div class="question-text">18. Paragraph 18 heading:</div>
+            <select class="custom-select" onchange="checkSelectQuestion(this)">
+                <option value="">-- Click chọn đáp án cuộn --</option>
+                <option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option>
+                <option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option>
+                <option value="vii">vii</option><option value="viii">viii</option>
+            </select>
+            <div class="explanation-block">
+                <h4>GIẢI THÍCH CHI TIẾT <button class="btn-locate" onclick="scrollLeftTo('ev-18')"><i class="fa-solid fa-mouse-pointer"></i> Định vị dẫn chứng</button></h4>
+                <div class="expl-section"><strong>1. ĐÁP ÁN:</strong> i (Ray’s account of his working methods)</div>
+                <div class="expl-section"><strong>2. DOAN CHUA DAP AN:</strong> "“I had first to become familiar with the literature, to compare the plants that I found with the pictures, and... to go fully into any unknown descriptions.”"</div>
+                <div class="expl-section"><strong>3. DICH NGHIA:</strong> Ray tự thuật lại các bước làm việc của mình như xem sách, so sánh cây thực tế với hình vẽ...</div>
+                <div class="expl-section"><strong>4. CUM TU DONG NGHIA:</strong> account of working methods = quote "I had first to... compare... search for similarities"</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-qtype="select" data-ans="viii">
+            <div class="question-text">19. Paragraph 19 heading:</div>
+            <select class="custom-select" onchange="checkSelectQuestion(this)">
+                <option value="">-- Click chọn đáp án cuộn --</option>
+                <option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option>
+                <option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option>
+                <option value="vii">vii</option><option value="viii">viii</option>
+            </select>
+            <div class="explanation-block">
+                <h4>GIẢI THÍCH CHI TIẾT <button class="btn-locate" onclick="scrollLeftTo('ev-19')"><i class="fa-solid fa-mouse-pointer"></i> Định vị dẫn chứng</button></h4>
+                <div class="expl-section"><strong>1. ĐÁP ÁN:</strong> viii (A description of the content of Ray’s first book)</div>
+                <div class="expl-section"><strong>2. DOAN CHUA DAP AN:</strong> "It gave the names of plants found in the area around Cambridge and included information about where they grew and how common they were."</div>
+                <div class="expl-section"><strong>3. DICH NGHIA:</strong> Đoạn văn mô tả nội dung cuốn sách chứa tên thực vật, thông tin nơi mọc và độ phổ biến của chúng.</div>
+                <div class="expl-section"><strong>4. CUM TU DONG NGHIA:</strong> description of content = gave the names... included information about where they grew</div>
+            </div>
+        </div>
+
+        <div class="question-card" data-qtype="select" data-ans="vii">
+            <div class="question-text">20. Paragraph 20 heading:</div>
+            <select class="custom-select" onchange="checkSelectQuestion(this)">
+                <option value="">-- Click chọn đáp án cuộn --</option>
+                <option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option>
+                <option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option>
+                <option value="vii">vii</option><option value="viii">viii</option>
+            </select>
+            <div class="explanation-block">
+                <h4>GIẢI THÍCH CHI TIẾT <button class="btn-locate" onclick="scrollLeftTo('ev-20')"><i class="fa-solid fa-mouse-pointer"></i> Định vị dẫn chứng</button></h4>
+                <div class="expl-section"><strong>1. ĐÁP ÁN:</strong> vii (Plans for a bold new project)</div>
+                <div class="expl-section"><strong>2. DOAN CHUA DAP AN:</strong> "...he began to imagine a more comprehensive investigation of nature, one that would attempt to classify living things... This was an ambitious undertaking..."</div>
+                <div class="expl-section"><strong>3. DICH NGHIA:</strong> Ông ấy bắt đầu hình dung một dự án nghiên cứu toàn diện và táo bạo hơn để phân loại mọi sinh vật sống.</div>
+                <div class="expl-section"><strong>4. CUM TU DONG NGHIA:</strong> bold new project = ambitious undertaking / comprehensive investigation</div>
+            </div>
+        </div>
+
+
+        <div class="section-header">Questions 21–24: Summary Completion</div>
+        <p style="font-weight: bold; font-style: italic; color: #555;">Complete the summary below. Write ONE WORD ONLY from the passage for each answer.</p>
+        
+        <div class="question-card" style="line-height: 2;">
+            <p style="margin:0; font-size:1.05rem; font-weight:600;">
+                John Ray was a scholar and self-taught botanist, whose work reflected the 
+                <strong>21.</strong> <input type="text" class="gap-fill" id="gap-21" placeholder="Điền từ..."> 
+                that was taking place during the 17th century in people’s way of thinking about the natural world. This new approach is the basis of the modern field of 
+                <strong>22.</strong> <input type="text" class="gap-fill" id="gap-22" placeholder="Điền từ...">. 
+                It represented a complete break from the ideas of Aristotle.
+                As Ray himself explained, his interest in plants was aroused after graduating, when he had to spend time outdoors after a period of 
+                <strong>23.</strong> <input type="text" class="gap-fill" id="gap-23" placeholder="Điền từ...">. 
+                He taught himself, in addition to many Cambridge 
+                <strong>24.</strong> <input type="text" class="gap-fill" id="gap-24" placeholder="Điền từ...">.
+            </p>
+            <div style="margin-top: 15px; text-align: right;">
+                <button class="btn-gamified" style="background: var(--soft-yellow);" onclick="checkSummaryGaps()">Kiểm tra ô chữ điền từ 📝</button>
+            </div>
+        </div>
+
+
+        <div class="section-header">Questions 25–26: Choose TWO Answers</div>
+        <p style="font-weight: bold; font-style: italic; color: #555;">Which TWO of the following statements are true of Ray’s early life?</p>
+        
+        <div class="question-card" id="q2526-card">
+            <div class="options-grid">
+                <button class="option-btn" onclick="checkMultipleChoiceTwo(this, 'A')">A. His teacher recommended that he should go to university.</button>
+                <button class="option-btn" onclick="checkMultipleChoiceTwo(this, 'B')">B. His school record was not exceptional in any way.</button>
+                <button class="option-btn" onclick="checkMultipleChoiceTwo(this, 'C')">C. He was helped by a former student of Cambridge University.</button>
+                <button class="option-btn" onclick="checkMultipleChoiceTwo(this, 'D')">D. His parents were both valued by the people in their local area.</button>
+                <button class="option-btn" onclick="checkMultipleChoiceTwo(this, 'E')">E. He originally planned to take up his father’s occupation.</button>
+            </div>
+            <div class="explanation-block" id="mcq-two-expl">
+                <h4>GIẢI THÍCH CHI TIẾT <div style="display:inline-block;"><button class="btn-locate" onclick="scrollLeftTo('ev-25')">Dẫn chứng C</button> <button class="btn-locate" onclick="scrollLeftTo('ev-26')">Dẫn chứng D</button></div></h4>
+                <div class="expl-section"><strong>ĐÁP ÁN ĐÚNG:</strong> C & D</div>
+                <div class="expl-section"><strong>Giải thích lựa chọn C:</strong> Dẫn chứng: <em>"talents were recognised by a church official, Samuel Covell, who had graduated from Cambridge University in 1600... Through his influence, Ray was admitted to Cambridge..."</em> -> Được giúp đỡ bởi cựu sinh viên Cambridge.</div>
+                <div class="expl-section"><strong>Giải thích lựa chọn D:</strong> Dẫn chứng: <em>"His father was a village blacksmith, and his mother was also a respected member of the community..."</em> -> Cả bố và mẹ đều có vị trí công việc, được xã hội nể trọng kính trọng (valued = respected).</div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<div id="summary-modal">
+    <div class="modal-content">
+        <h2>KẾT QUẢ CỦA BẠN 🎉</h2>
+        <div class="score-circle"><span class="val" id="final-score">0/13</span></div>
+        <p id="result-text" style="font-weight:700; color:var(--text-dark); line-height:1.6;"></p>
+        <button class="btn-gamified" style="background:var(--deep-purple); color:white;" onclick="location.reload()">LÀM LẠI BÀI CÙNG MS LÊ HẰNG 🌟</button>
+    </div>
+</div>
+
+<script>
+    // WEB AUDIO API
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playAudio(type) {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+        if (type === 'success') {
+            osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+            osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.08);
+            gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+        } else {
+            osc.frequency.setValueAtTime(220, audioCtx.currentTime);
+            osc.frequency.linearRampToValueAtTime(110, audioCtx.currentTime + 0.25);
+            gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+            osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+        }
+    }
+
+    // TIMER
+    let timeRemaining = 25 * 60;
+    let timerInterval = null;
+    document.getElementById('btn-timer-toggle').onclick = function() {
+        if (timerInterval) {
+            clearInterval(timerInterval); timerInterval = null;
+            this.innerText = 'TIẾP TỤC LÀM BÀI';
+        } else {
+            this.innerText = 'TẠM DỪNG ⏸️';
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                let mins = Math.floor(timeRemaining / 60);
+                let secs = timeRemaining % 60;
+                document.getElementById('timer').innerText = `${mins}:${secs < 10 ? '0' + secs : secs}`;
+                if (timeRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Đã hết giờ làm bài!");
+                }
+            }, 1000);
+        }
+    };
+
+    // PROGRESS TRACKING
+    let correctCount = 0;
+    const totalQuestions = 13;
+    const answeredSet = new Set();
+
+    function updateProgress() {
+        let percent = (answeredSet.size / totalQuestions) * 100;
+        document.getElementById('progress-fill').style.width = percent + '%';
+    }
+
+    // SCROLL & HIGHLIGHT ON DEMAND
+    function scrollLeftTo(elementId) {
+        const el = document.getElementById(elementId);
+        if (el) {
+            document.querySelectorAll('.evidence-mark').forEach(item => item.classList.remove('active-evidence'));
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            el.classList.add('active-evidence');
+            setTimeout(() => { el.classList.remove('active-evidence'); }, 3000);
+        }
+    }
+
+    function toggleTranslation(id) {
+        const el = document.getElementById(id);
+        el.style.display = el.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // INTERACTIVE CONTROLS
+    function checkSelectQuestion(selectEl) {
+        const card = selectEl.closest('.question-card');
+        const correctAns = card.dataset.ans;
+        if (!selectEl.value || selectEl.disabled) return;
+        selectEl.disabled = true;
+
+        if (selectEl.value === correctAns) {
+            selectEl.classList.add('correct');
+            playAudio('success');
+            confetti({ particleCount: 40 });
+            correctCount++;
+        } else {
+            selectEl.classList.add('wrong');
+            playAudio('fail');
+            selectEl.value = correctAns;
+            selectEl.classList.add('correct');
+        }
+        card.querySelector('.explanation-block').style.display = 'block';
+        answeredSet.add(card.querySelector('.question-text').innerText);
+        updateProgress();
+    }
+
+    // GAP FILL ENGINE
+    const correctGaps = { 'gap-21': 'revolution', 'gap-22': 'science', 'gap-23': 'illness', 'gap-24': 'students' };
+    function checkSummaryGaps() {
+        let checkedAny = false;
+        for (let id in correctGaps) {
+            let input = document.getElementById(id);
+            if (input.disabled || !input.value.trim()) continue;
+            input.disabled = true;
+            checkedAny = true;
+
+            if (input.value.trim().toLowerCase() === correctGaps[id]) {
+                input.classList.add('correct');
+                correctCount++;
+            } else {
+                input.classList.add('wrong');
+                input.value = correctGaps[id];
+                input.classList.add('correct');
+            }
+            answeredSet.add(id);
+        }
+        if(checkedAny) {
+            playAudio('success');
+            updateProgress();
+        }
+    }
+
+    // SELECTION OF TWO ANSWERS (C & D)
+    let selectedMcqTwo = [];
+    function checkMultipleChoiceTwo(btnEl, choice) {
+        const card = document.getElementById('q2526-card');
+        if (card.dataset.done === "true") return;
+
+        if (selectedMcqTwo.includes(choice)) return;
+        selectedMcqTwo.push(choice);
+
+        if (choice === 'C' || choice === 'D') {
+            btnEl.classList.add('correct');
+            correctCount++;
+        } else {
+            btnEl.classList.add('wrong');
+        }
+
+        if (selectedMcqTwo.length === 2) {
+            card.dataset.done = "true";
+            card.querySelectorAll('.option-btn').forEach(btn => {
+                let txt = btn.innerText;
+                if(txt.startsWith('C.') || txt.startsWith('D.')) btn.classList.add('correct');
+            });
+            document.getElementById('mcq-two-expl').style.display = 'block';
+            answeredSet.add('q2526');
+            updateProgress();
+        }
+    }
+
+    // HIGHLIGHT AUTOMATION
+    document.addEventListener('mouseup', function() {
+        let sel = window.getSelection();
+        if (sel.rangeCount > 0 && sel.toString().trim().length > 0) {
+            let node = document.createElement("span");
+            node.className = "user-highlight";
+            let range = sel.getRangeAt(0).cloneRange();
+            try { range.surroundContents(node); sel.removeAllRanges(); } catch(e){}
+        }
+    });
+
+    function submitExam() {
+        if(timerInterval) clearInterval(timerInterval);
+        document.getElementById('summary-modal').style.display = 'flex';
+        document.getElementById('final-score').innerText = `${correctCount}/${totalQuestions}`;
+        let txt = document.getElementById('result-text');
+        if(correctCount >= 9) {
+            txt.innerText = "Tuyệt cú mèo! Con làm bài siêu xuất sắc, đúng chuẩn chiến binh IELTS 9.0 tương lai của cô Hằng!";
+        } else {
+            txt.innerText = "Làm tốt lắm con ơi! Nhớ bấm nút 'Định vị dẫn chứng' để xem lại những chỗ bị nhầm lẫn và tích lũy từ vựng nhé!";
+        }
+        confetti({ particleCount: 150, spread: 80 });
+    }
+</script>
+</body>
+</html>
